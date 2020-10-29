@@ -157,11 +157,9 @@
 			}
 			
 			function calculateEndPoint(PI) {
-				var centerX=250, centerY=205, radius=200, ret=[];
-				//ret.push(centerX + radius * Math.cos(PI));
-				//ret.push(centerY + radius * Math.sin(PI));
-				ret.push(centerX - radius * Math.cos(PI));
-				ret.push(centerY - radius * Math.sin(PI));
+				var ret=[];
+				ret.push(250 - 200 * Math.cos(PI));
+				ret.push(205 - 200 * Math.sin(PI));
 				return ret;
 			}
 			
