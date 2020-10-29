@@ -10,7 +10,7 @@
 				width: 900px;
 				margin: auto;
 			}
-			svg {
+			canvas {
 				float: left;
 			}
 			#article {
@@ -38,21 +38,7 @@
 	
 	<body>
 		<div id="container">
-			<svg width="500" height="410">
-			   <circle cx="250" cy="206" r="200" stroke="black" stroke-width="4" fill="white"/>
-			   <line />
-			   <line />
-			   <line />
-			   <line />
-			   <line />
-			   <line />
-			   <line />
-			   <line />
-			   <line />
-			   <line />
-			   <line />
-			   <line />
-			</svg>
+			<canvas id="PieGraph" width="500" height="410"></canvas>
 			<div id="article">
 				<h2>PIE GRAPH</h2>
 				<hr />
@@ -96,6 +82,12 @@
 		</div>
 		
 		<script type="text/javascript">
+			var pieGraph = document.getElementById("PieGraph");
+			var ctx = pieGraph.getContext("2d");
+			ctx.beginPath();
+			ctx.arc(250,206,200,0,2*Math.PI);
+			ctx.stroke();
+		
 			function loadPieData() {
 				initAttribute();
 				var i=0, data=[], className=document.getElementsByClassName("dataPie");
@@ -110,15 +102,12 @@
 			}
 			
 			function initAttribute() {
-				var i=0;
-				while(i<document.getElementsByTagName("line").length) {
-					document.getElementsByTagName("line")[i].removeAttribute("x1");
-					document.getElementsByTagName("line")[i].removeAttribute("y1");
-					document.getElementsByTagName("line")[i].removeAttribute("x2");
-					document.getElementsByTagName("line")[i].removeAttribute("y2");
-					document.getElementsByTagName("line")[i].removeAttribute("style");
-					i++;
-				}
+				pieGraph = document.getElementById("PieGraph");
+				ctx = pieGraph.getContext("2d");
+				ctx.clearRect(0, 0, pieGraph.width, pieGraph.height);
+				ctx.beginPath();
+				ctx.arc(250,206,200,0,2*Math.PI);
+				ctx.stroke();
 			}
 			
 			function initialMathData(data) {
@@ -184,11 +173,9 @@
 			function callLineEndPoint(endPoint) {
 				var i=0;
 				while(i<endPoint.length) {
-					document.getElementsByTagName("line")[i].setAttribute("x1", "250");
-					document.getElementsByTagName("line")[i].setAttribute("y1", "205");
-					document.getElementsByTagName("line")[i].setAttribute("x2", endPoint[i][0]);
-					document.getElementsByTagName("line")[i].setAttribute("y2", endPoint[i][1]);
-					document.getElementsByTagName("line")[i].setAttribute("style", "stroke:rgb(0,0,0);stroke-width:1");
+					ctx.moveTo(250,205);
+					ctx.lineTo(endPoint[i][0], endPoint[i][1]);
+					ctx.stroke();
 					i++;
 				}
 			}			
