@@ -15,12 +15,15 @@
 			}
 			#article {
 				padding: 2px;
-				width: 350px;
+				width: 355px;
 				float: right;
 			}
 			button.dataPie {
 				height: 40px;
 				width: 480px;
+			}
+			#overallData {
+				margin-top: 40px;
 			}
 			#pieDatas {
 				float: left;
@@ -28,6 +31,15 @@
 			td {
 				margin: 0;
 				padding-left: 11px;
+			}
+			.dataColor {
+				float:left;
+				font-size: 12px;
+			}
+			.pieColor {
+				width: 10px;
+				height: 10px;
+				padding-left: 15px
 			}
 			.clear {
 				clear: both;
@@ -44,14 +56,37 @@
 				<hr />
 				Faddi Susanto&copy;2020
 				<br /><br />
-				<span>[]</span>= Data Pie 1
-				<br />
-				<span>[]</span>= Data pie 2
-				<br />
-				<span>[]</span>= Data pie 3
-				<br />
-				<span>[]</span>= Data pie 4
+				<div class="dataColor">
+					<span class="pieColor"></span>= Data Pie 1
+					<br />
+					<span class="pieColor"></span>= Data pie 2
+					<br />
+					<span class="pieColor"></span>= Data pie 3
+					<br />
+					<span class="pieColor"></span>= Data pie 4
+				</div>
+				<div class="dataColor">
+					<span class="pieColor"></span>= Data Pie 5
+					<br />
+					<span class="pieColor"></span>= Data pie 6
+					<br />
+					<span class="pieColor"></span>= Data pie 7
+					<br />
+					<span class="pieColor"></span>= Data pie 8
+
+				</div>
+				<div class="dataColor">
+					<span class="pieColor"></span>= Data Pie 9
+					<br />
+					<span class="pieColor"></span>= Data pie 10
+					<br />
+					<span class="pieColor"></span>= Data pie 11
+					<br />
+					<span class="pieColor"></span>= Data pie 12
+
+				</div>
 				<br /><br />
+				<div class="clear"></div>
 				<div id="overallData"></div>
 			</div>
 			<div id="pieDatas">
@@ -82,11 +117,21 @@
 		</div>
 		
 		<script type="text/javascript">
+			var arrayPercent = [];
 			var pieGraph = document.getElementById("PieGraph");
 			var ctx = pieGraph.getContext("2d");
 			ctx.beginPath();
 			ctx.arc(250,206,200,0,2*Math.PI);
 			ctx.stroke();
+		
+			function initAttribute() {
+				pieGraph = document.getElementById("PieGraph");
+				ctx = pieGraph.getContext("2d");
+				ctx.clearRect(0, 0, pieGraph.width, pieGraph.height);
+				ctx.beginPath();
+				ctx.arc(250,206,200,0,2*Math.PI);
+				ctx.stroke();
+			}
 		
 			function loadPieData() {
 				initAttribute();
@@ -99,15 +144,7 @@
 				}
 				var endPoint = initialMathData(data);
 				callLineEndPoint(endPoint);
-			}
-			
-			function initAttribute() {
-				pieGraph = document.getElementById("PieGraph");
-				ctx = pieGraph.getContext("2d");
-				ctx.clearRect(0, 0, pieGraph.width, pieGraph.height);
-				ctx.beginPath();
-				ctx.arc(250,206,200,0,2*Math.PI);
-				ctx.stroke();
+				callLineColorEndPoint();
 			}
 			
 			function initialMathData(data) {
@@ -165,6 +202,7 @@
 					overall += "<b>Data Pie " + j + "</b> sejumlah <font color='red'>" + 
 							data[i] + "</font> Berada pada <font color='blue'>" + 
 							(100/(100*dataPercent))*parseInt(data[i]) + "%</font><br />";
+					this.arrayPercent.push((100/(100*dataPercent))*parseInt(data[i]));
 					i++;
 				}
 				document.getElementById("overallData").innerHTML = overall;
@@ -178,7 +216,36 @@
 					ctx.stroke();
 					i++;
 				}
-			}			
+			}
+			
+			function percentToAngle(percent){
+				var twelveOClock=-Math.PI/2;
+				var fullCircle=Math.PI*2;
+				return(twelveOClock+fullCircle*(percent/100));
+			}
+			
+			function callLineColorEndPoint() {
+				var color = ["rgb(255,0,0)","rgb(255,125,0)","rgb(255,255,0)","rgb(125,255,0)",
+							"rgb(0,255,0)","rgb(0,255,125)","rgb(0,255,255)","rgb(0,125,255)",
+							"rgb(0,0,255)","rgb(125,0,255)","rgb(255,0,255)","rgb(255,0,125)"];
+				var i=0, cx = pieGraph.width/2, cy = pieGraph.height/2, startLine=75, endLine=0;
+				while(i<this.arrayPercent.length) {
+					ctx.beginPath();
+					ctx.moveTo(cx,cy);
+					var startAngle=percentToAngle(startLine);
+					endLine = startLine + this.arrayPercent[i];
+					if(endLine>100) endLine -= 100;
+					var endAngle=percentToAngle(endLine);
+					ctx.arc(250,206,200,startAngle,endAngle);
+					ctx.closePath();
+					ctx.fillStyle=color[i];
+					ctx.fill();
+					document.getElementsByClassName("pieColor")[i].style.backgroundColor = color[i];
+					startLine = endLine;
+					i++;
+				}
+				this.arrayPercent = [];
+			}
 		</script>
 		
 	</body>

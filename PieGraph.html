@@ -107,6 +107,7 @@
 				}
 				var endPoint = initialMathData(data);
 				callLineEndPoint(endPoint);
+				//callColorEndPoint(endPoint);
 			}
 			
 			function initAttribute() {
@@ -145,6 +146,7 @@
 							l++;
 						}
 						PI = (2*Math.PI) * (totalPercentData/100);
+						alert("PI="+PI+" || totalPercentData="+totalPercentData);
 						ret.push(calculateEndPoint(PI));
 					}
 					i++;
@@ -181,6 +183,7 @@
 				document.getElementById("overallData").innerHTML = overall;
 			}
 			
+			
 			function callLineEndPoint(endPoint) {
 				var i=0;
 				while(i<endPoint.length) {
@@ -191,7 +194,7 @@
 					document.getElementsByTagName("line")[i].setAttribute("style", "stroke:rgb(0,0,0);stroke-width:1");
 					i++;
 				}
-			}			
+			}
 		</script>
 		
 	</body>
